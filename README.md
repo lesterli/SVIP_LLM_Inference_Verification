@@ -2,7 +2,7 @@
 # SVIP: Towards Verifiable Inference of Open-Source Large Language Models
 
 <p align="center">
-  <img src="./figs/protocol_explain_flat.png" alt="Problem Setting of verifiable inference for LLMs" title="Problem Setting" style="max-width: 100%; height: auto;">
+  <img src="./figs/protocol_explain.png" alt="Problem Setting of verifiable inference for LLMs" title="Problem Setting" style="max-width: 100%; height: auto;">
 </p>
 
 This repository contains the implementation of **SVIP**, a secret-based verifiable LLM inference protocol. SVIP is designed to address a critical security issue when users rely on computing providers for LLM inference via black-box APIs: *the providers may stealthily substitute the requested LLM with a smaller, less capable model to save resources, compromising output quality while still charging users for the larger model.*
