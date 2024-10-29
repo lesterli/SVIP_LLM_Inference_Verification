@@ -1,0 +1,19 @@
+seed: 42
+
+learning_rate: 0.0003
+batch_size: 256
+secret_batch_size: 8
+threshold: 10.0
+margin: 20
+num_epochs: 6
+alpha: 0.5
+output_range_max: 10
+
+secret_dim: 48
+output_dim: 128
+
+test_split_ratio: 0.1
+
+sentence_encode_model_name: "sentence-transformers/all-mpnet-base-v2"
+sentence_embed_dim: 768
+
