@@ -115,3 +115,11 @@ python secret_recover_attack.py --model_path ./models/Llama-2-13b-hf/proxy_model
 
 ## Citation
 If you find our project helpful, please cite our paper:
+
+```bibtex
+@article{sun2024svip,
+  title={SVIP: Towards Verifiable Inference of Open-source Large Language Models},
+  author={Sun, Yifan and Li, Yuhang and Zhang, Yue and Jin, Yuchen and Zhang, Huan},
+  journal={arXiv preprint arXiv:2410.22307},
+  year={2024}
+}
