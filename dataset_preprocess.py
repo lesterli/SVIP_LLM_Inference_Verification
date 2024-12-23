@@ -7,8 +7,8 @@ import argparse
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Preprocess the text dataset")
-    parser.add_argument("--model_name", type=str,default="meta-llama/Llama-2-13b-hf")
-    parser.add_argument("--dataset_name", type=str, default="lmsys/lmsys-chat-1m")
+    parser.add_argument("--model_name", type=str,default="NousResearch/Llama-2-13b-chat-hf")
+    parser.add_argument("--dataset_name", type=str, default="Anthropic/hh-rlhf")
     return parser.parse_args()
 
 def split_into_sentences(text):
@@ -40,14 +40,9 @@ def main():
     for split in ["train"]:
         processed_data = []
         for example in tqdm(dataset[split]):
-            if example['language']!= 'English':
-                continue
-            conversation = example["conversation"]
-            for data in conversation:
-                if data['role'] == 'user':
-                    text = data['content']
-                    processed_examples = process_data(text,tokenizer)
-                    processed_data.extend(processed_examples)
+            text = example["chosen"] 
+            processed_examples = process_data(text,tokenizer)
+            processed_data.extend(processed_examples)
             
         output_file = f"./datasets/text_dataset_{split}.json"
         with open(output_file, "w") as f:

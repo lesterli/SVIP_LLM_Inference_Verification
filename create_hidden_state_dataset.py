@@ -28,8 +28,8 @@ def main():
 
     print("Start inference and saving hidden states!")
 
-    root_dir = "..."
-    save_path = f"{root_dir}/dataset/"
+    root_dir = "."
+    save_path = f"{root_dir}/datasets/"
     input_max_length = 48
     model_name = args.model_name
     input_dim = get_model_dimension(model_name)
@@ -49,7 +49,7 @@ def main():
         os.remove(h5file_path)
         print(f"Removed existing file: {h5file_path}")
 
-    train_dataset = TextDataset(f"{root_dir}/text_dataset_train.json")
+    train_dataset = TextDataset(f"{save_path}/text_dataset_train.json")
     subset_length = len(train_dataset) // 100
     train_subset = torch.utils.data.Subset(train_dataset, range(subset_length * args.start, subset_length * args.end))
     print("Dataset index: Start:", subset_length * args.start, "End:", subset_length * args.end)
