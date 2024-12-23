@@ -1,13 +1,13 @@
 import json
 import nltk
-from transformers import LlamaTokenizer
+from transformers import AutoTokenizer
 from datasets import load_dataset
 from tqdm import tqdm
 import argparse
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Preprocess the text dataset")
-    parser.add_argument("--model_name", type=str,default="NousResearch/Llama-2-13b-chat-hf")
+    parser.add_argument("--model_name", type=str,default="openai-community/gpt2-xl")
     parser.add_argument("--dataset_name", type=str, default="Anthropic/hh-rlhf")
     return parser.parse_args()
 
@@ -33,9 +33,10 @@ def main():
     nltk.download('punkt')
     model_name = args.model_name
     dataset_name = args.dataset_name
-    tokenizer = LlamaTokenizer.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
 
     dataset = load_dataset(dataset_name)
+    max_examples = 1000  # Limit total examples
 
     for split in ["train"]:
         processed_data = []
@@ -43,7 +44,9 @@ def main():
             text = example["chosen"] 
             processed_examples = process_data(text,tokenizer)
             processed_data.extend(processed_examples)
-            
+            if len(processed_data) >= max_examples:
+                break
+        
         output_file = f"./datasets/text_dataset_{split}.json"
         with open(output_file, "w") as f:
             json.dump(processed_data, f)

@@ -1,5 +1,4 @@
 {
-    "NousResearch/Llama-2-13b-chat-hf": 5120,
     "meta-llama/Llama-2-13b-hf": 5120,
     "EleutherAI/gpt-neox-20b": 6144,
     "facebook/opt-30b": 7168,
@@ -7,7 +6,7 @@
     "meta-llama/Llama-2-70b-hf": 8192,
     "meta-llama/Meta-Llama-3-70B": 8192,
     "meta-llama/Meta-Llama-3.1-70B": 8192,
-    "gpt2-xl": 1600,
+    "openai-community/gpt2-xl": 1600,
     "EleutherAI/gpt-neo-2.7B": 2560,
     "EleutherAI/gpt-j-6B": 4096,
     "facebook/opt-6.7b": 4096,
