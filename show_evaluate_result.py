@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pickle
 import argparse
+import os
 
 def plot_evaluation_result(evaluate_result_path, threshold):
     with open(evaluate_result_path, 'rb') as file:
@@ -28,13 +29,11 @@ def plot_evaluation_result(evaluate_result_path, threshold):
 
     colors = ['blue', 'cyan', 'green', 'magenta', 'purple', 'red', 'yellow', 'brown']
     alt_model_name = {
-        'gpt2-xl': 'GPT2-XL', 'gpt-neo-2.7B': 'GPT-NEO-2.7B', 'gpt-j-6B': 'GPT-J-6B', 
-        'opt-6.7b': 'OPT-6.7B', 'vicuna-7b-v1.5': 'Vicuna-7B', 'Llama-2-7b-hf': 'Llama-2-7B', 
+        'gpt-neo-2.7B': 'GPT-NEO-2.7B',
         'random': 'Random'
     }
     spec_model_name = {
-        'Llama-2-13b-hf': 'Llama-2-13B', 'gpt-neox-20b': 'GPT-NeoX-20B', 'opt-30b': 'OPT-30B',
-        'falcon-40b': 'Falcon-40B', 'Meta-Llama-3.1-70B': 'Llama-3.1-70B'
+        'gpt2-xl': 'GPT2-XL'
     }
 
     for j, diffs in enumerate(diffs_data):
@@ -51,8 +50,10 @@ def plot_evaluation_result(evaluate_result_path, threshold):
     ax.axvline(x=threshold, color='black', linestyle='--', linewidth=2)
     ax.legend(loc="upper right", fontsize=16, frameon=False)
     ax.grid(False)
-
-    plt.savefig('./results/evaluation_result.png', format='png')
+    directory = f"./results/"
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    plt.savefig(f'{directory}evaluation_result.png', format='png')
     plt.tight_layout()
     plt.show()
 
