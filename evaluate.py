@@ -106,7 +106,7 @@ def main():
                               sentence_embed_dim=config['y_model']['sentence_encode_dim']).to(device)
     y_model.load_state_dict(torch.load(config['y_model']['path']))
 
-    _, test_loader = create_dataloaders(args.data_file, None, args.batch_size, test_split_ratio)
+    _, test_loader = create_dataloaders(args.data_file, None, args.batch_size, test_split_ratio, num_workers=4)
     input_dim = get_model_dimension(args.model_name)
     verification_model = TransformerGFWithSecret(
         input_dim=config['model']['input_dim'],
@@ -123,12 +123,7 @@ def main():
 
     results = {}
     alter_model_names = [
-        "gpt2-xl",
-        "EleutherAI/gpt-neo-2.7B",
-        "EleutherAI/gpt-j-6B",
-        "facebook/opt-6.7b",
-        "lmsys/vicuna-7b-v1.5",
-        "meta-llama/Llama-2-7b-hf"
+        "EleutherAI/gpt-neo-2.7B"
     ]
     alter_model_names.append(args.model_name)
 
@@ -148,7 +143,10 @@ def main():
     results["random"] = np.array(all_diffs)
 
     model_name_save = args.model_name.split('/')[-1]
-    save_path = f"./pipeline_evaluation_results/results_{model_name_save}.pkl"
+    directory = f"./pipeline_evaluation_results/"
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    save_path = f"{directory}results_{model_name_save}.pkl"
     with open(save_path, 'wb') as f:
         pickle.dump(results, f)
 

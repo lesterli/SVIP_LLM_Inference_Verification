@@ -90,10 +90,13 @@ def calculate_class_weights(token_counts, tokens_to_test, total_counts):
 
 def create_dataloaders(h5file_path, token_to_index, batch_size, test_split_ratio,num_workers=64,last_token_dataset=True):
     start = time.time()
-
-
     dataset = PrecomputedHiddenStatesDataset(h5file_path, token_to_index)
     print("Finish Loading Dataset in ",time.time()-start)
+
+    if test_split_ratio == 1.00:
+        test_loader = DataLoader(dataset, batch_size=batch_size, shuffle=False,num_workers=num_workers)
+        return None, test_loader
+    
     test_size = int(test_split_ratio * len(dataset))
     train_size = len(dataset) - test_size
     train_dataset, test_dataset = random_split(dataset, [train_size, test_size])
