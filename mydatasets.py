@@ -27,7 +27,8 @@ class TokenPredictionDataset(Dataset):
         return {"input_ids": input_ids,"labels":labels}
 
 class TextDataset(Dataset):
-    def __init__(self, file_path, max_length_before_padding=48):
+    def __init__(self, file_path, tokenizer, max_length_before_padding=48):
+        self.tokenizer = tokenizer
         self.max_length = max_length_before_padding
         with open(file_path, "r") as f:
             self.data = json.load(f)
@@ -37,7 +38,17 @@ class TextDataset(Dataset):
 
     def __getitem__(self, idx):
         item = self.data[idx]
-        return {"text": item["texts"]}
+        encoding = self.tokenizer(
+            item["texts"],
+            truncation=True,
+            max_length=self.max_length,
+            padding="max_length",
+            return_tensors="pt"
+        )
+        return {
+            "input_ids": encoding["input_ids"].squeeze(0),
+            "attention_mask": encoding["attention_mask"].squeeze(0)
+        }
 
 
 class PrecomputedHiddenStatesDataset(Dataset):

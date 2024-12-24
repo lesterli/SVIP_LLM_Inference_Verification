@@ -10,6 +10,7 @@ import yaml
 from models import *
 from mydatasets import *
 from utils import *
+import os
 
 class ContrastiveLoss(nn.Module):
     def __init__(self, margin=1.0, alpha=0.5):
@@ -141,7 +142,7 @@ if __name__ == "__main__":
     tokenizer = AutoTokenizer.from_pretrained(config["sentence_encode_model_name"])
     data_collator = DataCollatorWithPadding(tokenizer)
 
-    dataset = TextDataset(args.dataset_path)
+    dataset = TextDataset(args.dataset_path, tokenizer)
     subset_length = len(dataset) // 10
     dataset = torch.utils.data.Subset(dataset, range(subset_length))
 
@@ -165,4 +166,7 @@ if __name__ == "__main__":
         train_model(model, train_loader, config["secret_batch_size"], config["secret_dim"], optimizer, scheduler, criterion, device)
         test_model(model, test_loader, config["secret_batch_size"], config["secret_dim"], criterion, device)
         distance_between_two_secrets(model, test_loader, config["secret_dim"], config["threshold"], device)
-        torch.save(model.state_dict(), f'./models/Ymodel.pth')
+        directory = f"./models/"
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        torch.save(model.state_dict(), f'{directory}Ymodel.pth')
