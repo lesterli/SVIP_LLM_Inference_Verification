@@ -104,8 +104,13 @@ class TransformerGFWithSecret(nn.Module):
         x = torch.cat([secret, x], dim=1)
 
         if attention_mask is not None:
-            src_key_padding_mask = torch.cat([torch.zeros((batch_size, 1), dtype=torch.bool, device=src_key_padding_mask.device), src_key_padding_mask], dim=1)
-
+            src_key_padding_mask = (attention_mask == 0)
+            # Create padding for secret token using x's device instead of src_key_padding_mask's device
+            src_key_padding_mask = torch.cat([torch.zeros((batch_size, 1), dtype=torch.bool, device=x.device), src_key_padding_mask], dim=1)
+        else:
+            # If no attention mask, create a mask of all zeros with the correct device
+            src_key_padding_mask = torch.zeros((batch_size, x.size(1) + 1), dtype=torch.bool, device=x.device)
+        
         transformer_output = self.transformer_g(x.transpose(0,1), src_key_padding_mask=src_key_padding_mask)
         output = transformer_output[0, :, :]
         return self.f(output)

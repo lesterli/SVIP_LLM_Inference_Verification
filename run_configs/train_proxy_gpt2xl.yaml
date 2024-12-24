@@ -1,0 +1,36 @@
+# General Settings
+seed: 42
+batch_size: 256
+secret_batch_size: 4
+num_epochs: 8
+contrastive_loss_weight: 0.1
+margin: 30.0
+threshold: 0.01
+
+# Model Configuration
+model:
+  name: "openai-community/gpt2-xl"
+  input_dim: 1600
+  output_dim: 128
+  secret_dim: 48
+  num_layers: 4
+  num_heads: 16
+  dropout: 0.2
+  hidden_dim: 1024
+
+# Y-Model Configuration
+y_model:
+  path: "./models/Ymodel.pth"
+  sentence_encode_model_name: "sentence-transformers/all-mpnet-base-v2"
+  sentence_encode_dim: 768
+  output_range_max: 1
+
+# Optimizer and Scheduler Settings
+learning_rate: 0.0003
+warmup_steps: 1000
+weight_decay: 0.01
+
+# Dataset Configuration
+dataset_path: "./datasets/hidden_states_0_10_L48_openai-community_gpt2-xl.h5"
+test_split_ratio: 0.1
+num_workers: 1
